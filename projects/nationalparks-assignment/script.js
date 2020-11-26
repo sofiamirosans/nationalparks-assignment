@@ -1,5 +1,8 @@
 "use strict";
 
+const nationalParksApi = 'https://developer.nps.gov/api/v1/parks?';
+
+const apiKey = 'dsLDKhsDw1xCXeeC0fi7IyLhCJ3k1w04qv8WuszS';
 
 //retrieve user text input
 function userInput() {
@@ -9,19 +12,18 @@ function userInput() {
 
 //from user input, create api url with query parameters
 function formatQueryUrl(queryParam) {
-  const nationalParksApi = 'https://developer.nps.gov/api/v1/parks?';
-  const queryString = Object.keys(queryParam).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(queryParam[key])).join('&');
+  let queryString = Object.keys(queryParam).map(key => encodeURIComponent(key) + '=' + queryParam[key]).join('&');
   return nationalParksApi + queryString
 };
 
 //get results based on user input 
 function getResults(stateCode, maxResults = 10) {
-  const param = {
-    api_key: 'dsLDKhsDw1xCXeeC0fi7IyLhCJ3k1w04qv8WuszS',
+  let param = {
+    api_key: apiKey,
     stateCode: stateCode,
     limit: maxResults
   }
-  const url = formatQueryUrl(param);
+  let url = formatQueryUrl(param);
   console.log(url)
   fetch(url)
     .then(response => {
@@ -39,8 +41,8 @@ function getResults(stateCode, maxResults = 10) {
 function watchSubmit() {
   $('form').on('submit', event => {
     event.preventDefault();
-    const stateCode = $('.state-code').val();
-    const maxResults = $('.max-results').val();
+    let stateCode = $('.state-code').val();
+    let maxResults = $('.max-results').val();
     getResults(stateCode, maxResults)
   });
 
@@ -50,9 +52,10 @@ $(watchSubmit);
 
 //display results in the DOM
 function displayResults(responseJson) {
-  $(".results-hidden").html("");
+  $(".results-hidden").empty();
   console.log(responseJson);
   responseJson.data.forEach(nationalPark => {
     $(".results-hidden").append(`<li>${nationalPark.fullName} ${nationalPark.description} ${nationalPark.url}</li>`)
   })
+  $(".container-2").removeClass('hidden');
 }

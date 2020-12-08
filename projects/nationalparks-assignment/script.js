@@ -55,7 +55,7 @@ function displayResults(responseJson) {
   $(".results-hidden").empty();
   console.log(responseJson);
   responseJson.data.forEach(nationalPark => {
-    $(".results-hidden").append(`<li>${nationalPark.fullName} ${nationalPark.description} ${nationalPark.url}</li>`)
+    $(".results-hidden").append(`<li>${nationalPark.fullName} ${nationalPark.description} <a href="${nationalPark.url}">${nationalPark.url}</a></li>`)
   })
   $(".container-2").removeClass('hidden');
 }
